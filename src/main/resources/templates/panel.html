@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="robots" content="noindex"/>
+
+    <title>Pokemon Go</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+    <style type="text/css">
+        /* USER PROFILE PAGE */
+        .card {
+            margin-top: 20px;
+            padding: 30px;
+            background-color: rgba(214, 224, 226, 0.2);
+            -webkit-border-top-left-radius:5px;
+            -moz-border-top-left-radius:5px;
+            border-top-left-radius:5px;
+            -webkit-border-top-right-radius:5px;
+            -moz-border-top-right-radius:5px;
+            border-top-right-radius:5px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .card.hovercard {
+            position: relative;
+            padding-top: 0;
+            overflow: hidden;
+            text-align: center;
+            background-color: #fff;
+            background-color: rgba(255, 255, 255, 1);
+        }
+        .card.hovercard .card-background {
+            height: 130px;
+        }
+        .card-background img {
+            -webkit-filter: blur(25px);
+            -moz-filter: blur(25px);
+            -o-filter: blur(25px);
+            -ms-filter: blur(25px);
+            filter: blur(25px);
+            max-width:110%;
+            margin-left: -70px;
+            margin-right: -70px;
+        }
+        .card.hovercard .useravatar {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+        }
+        .card.hovercard .useravatar img {
+            width: 100px;
+            height: 100px;
+            max-width: 100px;
+            max-height: 100px;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.5);
+        }
+        .card.hovercard .card-info {
+            position: absolute;
+            bottom: 14px;
+            left: 0;
+            right: 0;
+        }
+        .card.hovercard .card-info .card-title {
+            padding:0 5px;
+            font-size: 20px;
+            line-height: 1;
+            color: #262626;
+
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+        }
+        .card.hovercard .card-info {
+            overflow: hidden;
+            font-size: 12px;
+            line-height: 20px;
+            color: #737373;
+            text-overflow: ellipsis;
+        }
+        .card.hovercard .bottom {
+            padding: 0 20px;
+            margin-bottom: 17px;
+        }
+        .btn-pref .btn {
+            -webkit-border-radius:0 !important;
+        }
+    </style>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        window.alert = function(){};
+        var defaultCSS = document.getElementById('bootstrap-css');
+        function changeCSS(css){
+            if(css) $('head > link').filter(':first').replaceWith('<link rel="stylesheet" href="'+ css +'" type="text/css" />');
+            else $('head > link').filter(':first').replaceWith(defaultCSS);
+        }
+        $( document ).ready(function() {
+          var iframe_height = parseInt($('html').height());
+          window.parent.postMessage( iframe_height, 'http://bootsnipp.com');
+        });
+    </script>
+</head>
+<body>
+
+<div class="row">
+
+    <div class="col-lg-6 col-sm-6" style="float: none; margin: 0 auto;">
+        <div class="card hovercard">
+            <div class="card-background">
+                <img th:if="${playerdata.getPlayerData().getTeamValue()} eq '1'" class="card-bkimg" alt="" src="/static/img/mystic.jpg"/>
+                <img th:if="${playerdata.getPlayerData().getTeamValue()} eq '2'" class="card-bkimg" alt="" src="/static/img/valor.jpg"/>
+                <img th:if="${playerdata.getPlayerData().getTeamValue()} eq '3'" class="card-bkimg" alt="" src="/static/img/instinct.jpg"/>
+            </div>
+
+            <div class="useravatar">
+                <!--<img alt="" src="http://lorempixel.com/100/100/people/9/"/>-->
+            </div>
+            <div class="card-info">
+                <h3 class="card-title" th:text="${playerdata.getPlayerData().getUsername()}"></h3>
+                <span class="" th:text="${playerdata.getStats().getExperience() + ' / ' + playerdata.getStats().getNextLevelXp()}"></span>
+                <br/>
+                <span class="" th:text="${'Level ' + playerdata.getStats().getLevel()}"></span>
+            </div>
+        </div>
+        <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+                <button type="button" id="stars" class="btn btn-primary" href="#tab1" data-toggle="tab"><span
+                        class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                    <div class="hidden-xs">Pokémon</div>
+                </button>
+            </div>
+            <div class="btn-group" role="group">
+                <button type="button" id="favorites" class="btn btn-default" href="#tab2" data-toggle="tab"><span
+                        class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                    <div class="hidden-xs">Items</div>
+                </button>
+            </div>
+            <div class="btn-group" role="group">
+                <button type="button" id="following" class="btn btn-default" href="#tab3" data-toggle="tab"><span
+                        class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    <div class="hidden-xs">Journal</div>
+                </button>
+            </div>
+        </div>
+
+        <div class="well">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tab1">
+                    <ul class="list-group">
+                        <li class="list-group-item" th:each="pokemon : ${pokedata.pokemons}">
+                            <span th:text="${pokemon.getCp()}" class="badge"></span>
+                            <span th:text="${pokedata.getOwnerName(pokemon.getPokemonId().getNumber())}"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-pane fade in" id="tab2">
+                    <h3>This is tab 2</h3>
+                </div>
+                <div class="tab-pane fade in" id="tab3">
+                    <h3>This is tab 3</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+    $(".btn-pref .btn").click(function () {
+        $(".btn-pref .btn").removeClass("btn-primary").addClass("btn-default");
+        // $(".tab").addClass("active"); // instead of this do the below
+        $(this).removeClass("btn-default").addClass("btn-primary");
+    });
+    });
+</script>
+</body>
+</html>

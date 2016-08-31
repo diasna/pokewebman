@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+    </script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async="async" defer="defer">
+    </script>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script>
+        function start() {
+            gapi.load('auth2', function() {
+                auth2 = gapi.auth2.init({
+                client_id: '408280737979-ilmu66p2ljg3bi74plv3oi0cal6t46gb.apps.googleusercontent.com'
+                });
+            });
+        }
+    </script>
+    <script>
+        function signInCallback(authResult) {
+            if (authResult['code']) {
+                $('#signinButton').attr('style', 'display: none');
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://www.stevetest.com:8080/google?code=' + authResult['code'],
+                    contentType: 'application/octet-stream; charset=utf-8',
+                    success: function(result) {
+
+                    },
+                    processData: false
+                });
+            } else {
+
+            }
+        }
+    </script>
+
+</head>
+<body>
+<form method="post" action="/login">
+    <p><input type="text" name="login" value="" placeholder="Username or Email"/></p>
+    <p><input type="password" name="password" value="" placeholder="Password"/></p>
+    <p class="submit"><input type="submit" name="commit" value="Login"/></p>
+</form>
+<button id="signinButton">Sign in with Google</button>
+<script>
+        $('#signinButton').click(function() {
+            auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
+        });
+    </script>
+</body>
+</html>

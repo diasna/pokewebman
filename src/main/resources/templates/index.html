@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="/login">
+    <p><input type="text" name="login" value="" placeholder="Username or Email"/></p>
+    <p><input type="password" name="password" value="" placeholder="Password"/></p>
+    <p class="submit"><input type="submit" name="commit" value="Login"/></p>
+</form>
+<button id="signinButton" onclick="javascript:location.href='/google'">Sign in with Google</button>
+</body>
+</html>
